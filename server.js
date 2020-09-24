@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
 
-const Workout = require("./models/workoutModel.js");
+const Workout = require("./models/workouts.js");
 const app = express();
 
 app.use(logger("dev"));
@@ -18,15 +18,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutdb", {
   useNewUrlParser: true,
 });
 
-app.get("/api/workouts", (req, res) => {
-  Workout.find({}, (error, found) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.json(found);
-    }
-  });
-});
+app.use(require("./routes/apiRoutes.js"));
+app.use(require("./routes/htmlRoutes.js"));
+
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
